@@ -6,6 +6,8 @@ import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { Separator } from "./components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
+import { Section } from "./components/ui/section";
+import { Muted } from "./components/ui/typography";
 import { Lock, ShieldCheck } from "lucide-react";
 
 const ACCESS_PASSWORD = "admin1234";
@@ -30,7 +32,8 @@ export default function App() {
   if (isAuthenticated) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-        <Card className="w-full max-w-xl">
+        <Section className="max-w-xl">
+          <Card className="w-full">
           <CardHeader className="space-y-3">
             <Badge className="w-fit">Access granted</Badge>
             <CardTitle className="text-3xl">Welcome to the website</CardTitle>
@@ -40,19 +43,21 @@ export default function App() {
           </CardHeader>
           <CardContent className="pt-0">
             <Separator className="mb-4" />
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Muted className="flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
               Session unlocked successfully.
-            </div>
+            </Muted>
           </CardContent>
-        </Card>
+          </Card>
+        </Section>
       </main>
     );
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-      <Card className="w-full max-w-md">
+      <Section className="max-w-md">
+        <Card className="w-full">
         <CardHeader className="space-y-3">
           <Badge variant="secondary" className="w-fit">
             Protected website
@@ -65,8 +70,8 @@ export default function App() {
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="hidden">
-              <label htmlFor="username">Username</label>
-              <input
+              <Label htmlFor="username">Username</Label>
+              <Input
                 id="username"
                 type="text"
                 name="username"
@@ -99,7 +104,8 @@ export default function App() {
             </Button>
           </form>
         </CardContent>
-      </Card>
+        </Card>
+      </Section>
     </main>
   );
 }
