@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 
 test("shows login UI by default", () => {
@@ -9,7 +9,7 @@ test("shows login UI by default", () => {
   expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
 });
 
-test("shows an error for wrong password", () => {
+test("shows loading state and then an error for wrong password", async () => {
   render(<App />);
 
   fireEvent.change(screen.getByLabelText(/Password/i), {
@@ -17,10 +17,15 @@ test("shows an error for wrong password", () => {
   });
   fireEvent.click(screen.getByRole("button", { name: /Unlock website/i }));
 
-  expect(screen.getByText(/Invalid password/i)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /Checking password/i })).toBeDisabled();
+  expect(screen.getByLabelText(/Password/i)).toBeDisabled();
+
+  await waitFor(() => {
+    expect(screen.getByText(/Invalid password/i)).toBeInTheDocument();
+  });
 });
 
-test("grants access for the correct password", () => {
+test("shows loading state and grants access for the correct password", async () => {
   render(<App />);
 
   fireEvent.change(screen.getByLabelText(/Password/i), {
@@ -28,6 +33,10 @@ test("grants access for the correct password", () => {
   });
   fireEvent.click(screen.getByRole("button", { name: /Unlock website/i }));
 
-  expect(screen.getByText(/Access granted/i)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /Checking password/i })).toBeDisabled();
+
+  await waitFor(() => {
+    expect(screen.getByText(/Access granted/i)).toBeInTheDocument();
+  });
   expect(screen.getByText(/Welcome to the website/i)).toBeInTheDocument();
 });
