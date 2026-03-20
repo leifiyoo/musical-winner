@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
@@ -17,6 +17,17 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingPassword, setIsCheckingPassword] = useState(false);
   const [error, setError] = useState("");
+  const checkTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,7 +39,11 @@ export default function App() {
     setError("");
     setIsCheckingPassword(true);
 
-    window.setTimeout(() => {
+    checkTimeoutRef.current = setTimeout(() => {
+      if (!isMountedRef.current) {
+        return;
+      }
+
       if (password === ACCESS_PASSWORD) {
         setIsAuthenticated(true);
         setError("");
