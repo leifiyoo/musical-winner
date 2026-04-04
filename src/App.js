@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { LiquidMetal } from '@paper-design/shaders-react';
 
 const SOCIAL_LINKS = [
   {
@@ -93,7 +94,7 @@ export default function App() {
     setIsNavigating(true);
     setTimeout(() => {
       window.location.href = url;
-    }, 600); // Wartet bis die Transition-Animation (0.6s) vollendet ist
+    }, 1500); // Verzögerung für das "redirecting..." Overlay
   };
 
   return (
@@ -148,8 +149,27 @@ export default function App() {
       <main className="main-container">
         <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
           <div className="hero-header-inner">
-            <div className="name-wrapper">
-              <h1 className="hero-title-premium">leifiyo</h1>
+            <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <div style={{ width: "300px", height: "80px", position: "relative", marginBottom: "1rem" }}>
+                <LiquidMetal
+                  width="100%"
+                  height="100%"
+                  image="/leifiyoTEXT.png"
+                  colorBack="#aaaaac"
+                  colorTint="#ffffff"
+                  shape={undefined}
+                  repetition={2}
+                  softness={0.1}
+                  shiftRed={0.3}
+                  shiftBlue={0.3}
+                  distortion={0.07}
+                  contour={0.4}
+                  angle={70}
+                  speed={1}
+                  scale={0.6}
+                  fit="contain"
+                />
+              </div>
             </div>
             <a className="hero-mail" href="mailto:hi@leifiyo.dev">
               hi@leifiyo.dev
