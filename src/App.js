@@ -155,7 +155,7 @@ export default function App() {
                   width="100%"
                   height="100%"
                   image="/leifiyoTEXT.png"
-                  colorBack="#09090b"
+                  colorBack="#00000000"
                   colorTint="#ffffff"
                   shape={undefined}
                   repetition={2}
