@@ -73,7 +73,7 @@ export default function App() {
     // Initial site load animation
     const loadTimer = setTimeout(() => {
       setIsLoaded(true);
-    }, 150);
+    }, 1200); // 1.2s zeigt das Loading ordentlich
     return () => clearTimeout(loadTimer);
   }, []);
 
@@ -93,7 +93,7 @@ export default function App() {
     setIsNavigating(true);
     setTimeout(() => {
       window.location.href = url;
-    }, 450); // Matches the CSS transition duration
+    }, 600); // Wartet bis die Transition-Animation (0.6s) vollendet ist
   };
 
   return (
@@ -105,8 +105,8 @@ export default function App() {
 
       <div className={`page-transition-overlay ${isNavigating ? "is-navigating" : ""}`} aria-hidden="true">
         <div className="redirect-content">
-          <div className="redirect-indicator"></div>
-          <span className="redirect-text">Navigating...</span>
+          <span className="redirect-spinner"></span>
+          <span className="redirect-text">redirecting...</span>
         </div>
       </div>
       <div className="ambient-layer" aria-hidden="true" />
@@ -120,7 +120,10 @@ export default function App() {
             <div className="modal-options">
               <a 
                 href="https://instagram.com/leifiyo" 
-                onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyo")}
+                onClick={(e) => {
+                  setShowInsta(false);
+                  handleNavigate(e, "https://instagram.com/leifiyo");
+                }}
                 className="insta-option brand-insta-secondary"
               >
                 <span>Public Feed</span>
@@ -128,7 +131,10 @@ export default function App() {
               </a>
               <a 
                 href="https://instagram.com/leifiyoprivate" 
-                onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyoprivate")}
+                onClick={(e) => {
+                  setShowInsta(false);
+                  handleNavigate(e, "https://instagram.com/leifiyoprivate");
+                }}
                 className="insta-option brand-insta-secondary"
               >
                 <span>Private</span>
@@ -143,7 +149,7 @@ export default function App() {
         <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
           <div className="hero-header-inner">
             <div className="name-wrapper">
-              <h1 className="hero-title-shimmer" data-text="leifiyo">leifiyo</h1>
+              <h1 className="hero-title-premium">leifiyo</h1>
             </div>
             <a className="hero-mail" href="mailto:hi@leifiyo.dev">
               hi@leifiyo.dev
