@@ -150,12 +150,12 @@ export default function App() {
         <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
           <div className="hero-header-inner">
             <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <div style={{ width: "300px", height: "80px", position: "relative", marginBottom: "1rem" }}>
+              <div style={{ width: "100%", maxWidth: "600px", height: "160px", position: "relative", marginBottom: "0.5rem", marginLeft: "-2rem" }}>
                 <LiquidMetal
                   width="100%"
                   height="100%"
                   image="/leifiyoTEXT.png"
-                  colorBack="#aaaaac"
+                  colorBack="#09090b"
                   colorTint="#ffffff"
                   shape={undefined}
                   repetition={2}
@@ -166,7 +166,7 @@ export default function App() {
                   contour={0.4}
                   angle={70}
                   speed={1}
-                  scale={0.6}
+                  scale={1}
                   fit="contain"
                 />
               </div>
