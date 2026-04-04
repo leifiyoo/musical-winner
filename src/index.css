@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 20% 98%;
+    --foreground: 210 11% 18%;
+    --muted: 43 17% 95%;
+    --muted-foreground: 45 4% 48%;
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
+    --ring: 210 11% 18%;
+    --primary: 210 11% 18%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 43 17% 95%;
+    --secondary-foreground: 210 11% 18%;
+    --destructive: 0 59% 40%;
+    --destructive-foreground: 0 0% 100%;
+
+    --canvas: #fbfbfa;
+    --surface: #ffffff;
+    --ink: #2f3437;
+    --muted-ink: #787774;
+    --structure: #eaeaea;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    @apply bg-background text-foreground antialiased;
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", "SF Pro Display", "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.page-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--canvas);
+  padding: 3.5rem 1.25rem 4rem;
+}
+
+.ambient-layer {
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 16%, rgba(225, 243, 254, 0.55) 0%, rgba(225, 243, 254, 0) 38%),
+    radial-gradient(circle at 83% 14%, rgba(251, 243, 219, 0.5) 0%, rgba(251, 243, 219, 0) 34%),
+    radial-gradient(circle at 50% 84%, rgba(237, 243, 236, 0.46) 0%, rgba(237, 243, 236, 0) 41%);
+  opacity: 0.38;
+  animation: drift 30s ease-in-out infinite alternate;
+}
+
+.linktree-wrapper {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 68rem);
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+  padding: 2.6rem 0 3rem;
+}
+
+.hero-panel {
+  background: var(--surface);
+  border: 1px solid var(--structure);
+  border-radius: 12px;
+  padding: 2.25rem clamp(1.25rem, 2.6vw, 2.8rem);
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: #f3f0e8;
+  color: var(--muted-ink);
+  border: 1px solid var(--structure);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.24rem 0.58rem;
+}
+
+.hero-title {
+  margin: 1rem 0 0.55rem;
+  color: #111111;
+  font-family: "Newsreader", "Instrument Serif", serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
+.hero-copy {
+  max-width: 52ch;
+  margin: 0 0 1.12rem;
+  color: var(--muted-ink);
+  font-size: 1.01rem;
+}
+
+.hero-mail {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--structure);
+  border-radius: 6px;
+  background: #f7f6f3;
+  color: #4e5356;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  padding: 0.42rem 0.72rem;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.social-card {
+  display: grid;
+  gap: 0.54rem;
+  background: var(--surface);
+  border: 1px solid var(--structure);
+  border-radius: 12px;
+  padding: 1.4rem 1.24rem 1.28rem;
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.social-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-color: #dfdfdf;
+}
+
+.social-card:active {
+  transform: scale(0.98);
+}
+
+.social-tag {
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.24rem 0.56rem;
+}
+
+.social-handle {
+  margin: 0;
+  color: #111111;
+  font-family: "Newsreader", "Instrument Serif", serif;
+  font-size: 1.72rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.social-copy {
+  margin: 0;
+  color: var(--muted-ink);
+  font-size: 0.95rem;
+}
+
+.social-cta {
+  display: inline-flex;
+  justify-self: start;
+  margin-top: 0.2rem;
+  color: #333333;
+  border-bottom: 1px solid #d7d7d7;
+  font-size: 0.8rem;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.tone-red .social-tag {
+  background: #fdebec;
+  color: #9f2f2d;
+  border-color: rgba(159, 47, 45, 0.18);
+}
+
+.tone-blue .social-tag {
+  background: #e1f3fe;
+  color: #1f6c9f;
+  border-color: rgba(31, 108, 159, 0.18);
+}
+
+.tone-green .social-tag {
+  background: #edf3ec;
+  color: #346538;
+  border-color: rgba(52, 101, 56, 0.18);
+}
+
+.tone-yellow .social-tag {
+  background: #fbf3db;
+  color: #956400;
+  border-color: rgba(149, 100, 0, 0.2);
+}
+
+.footnote {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-top: 0.35rem;
+  border-top: 1px solid var(--structure);
+  padding: 1.1rem 0.35rem 0;
+  color: var(--muted-ink);
+  font-size: 0.9rem;
+}
+
+.footnote p {
+  margin: 0;
+}
+
+.footnote a {
+  color: #3e4346;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.reveal-base {
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: transform, opacity;
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--index, 0) * 80ms);
+}
+
+.reveal-base.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(3%, -2%, 0) scale(1.04);
+  }
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 4.3rem 1.6rem 4.4rem;
+  }
+
+  .social-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .social-card-wide {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 960px) {
+  .page-shell {
+    padding: 5rem 2rem 5.2rem;
+  }
+
+  .linktree-wrapper {
+    gap: 1.15rem;
+  }
+
+  .social-grid {
+    grid-template-columns: 1.35fr 0.9fr 0.9fr;
+  }
+
+  .social-card-wide {
+    grid-column: span 2;
+  }
+}
