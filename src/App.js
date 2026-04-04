@@ -3,34 +3,26 @@ import React, { useEffect, useState } from "react";
 const SOCIAL_LINKS = [
   {
     name: "Apple Music",
-    handle: "leifiyo",
     href: "https://music.apple.com/",
     description: "Latest releases, beats, and curated playlists.",
-    tone: "red",
     isWide: true,
   },
   {
     name: "X",
-    handle: "@leifiyo",
     href: "https://x.com/leifiyo",
     description: "Quick thoughts, tech, and daily life.",
-    tone: "gray",
     isWide: false,
   },
   {
     name: "GitHub",
-    handle: "leifiyo",
     href: "https://github.com/leifiyo",
     description: "Open source projects & experiments.",
-    tone: "blue",
     isWide: false,
   },
   {
     name: "Snapchat",
-    handle: "leifiyo",
     href: "https://snapchat.com/add/leifiyo",
     description: "Daily drops and behind the scenes.",
-    tone: "yellow",
     isWide: true,
   }
 ];
@@ -74,12 +66,33 @@ function useRevealOnScroll() {
 export default function App() {
   useRevealOnScroll();
   const [showInsta, setShowInsta] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  useEffect(() => {
+    // Reset navigation state when coming back to the page via back button
+    const handlePageShow = (e) => {
+      if (e.persisted) {
+        setIsNavigating(false);
+      }
+    };
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
+
+  const handleNavigate = (e, url) => {
+    e.preventDefault();
+    setIsNavigating(true);
+    setTimeout(() => {
+      window.location.href = url;
+    }, 450); // Matches the CSS transition duration
+  };
 
   return (
     <div className="page-shell">
+      <div className={`page-transition-overlay ${isNavigating ? "is-navigating" : ""}`} aria-hidden="true" />
       <div className="ambient-layer" aria-hidden="true" />
 
-      <main className="linktree-wrapper">
+      <main className="bento-wrapper">
         <section className="hero-panel reveal-base" data-reveal style={{ "--index": 0 }}>
           <p className="hero-eyebrow">Profile</p>
           <h1 className="hero-title">leifiyo</h1>
@@ -89,62 +102,69 @@ export default function App() {
           </a>
         </section>
 
-        <section className="social-grid" aria-label="Social media links">
-          <div 
-            className="social-card reveal-base tone-purple social-card-wide"
-            onClick={() => setShowInsta(!showInsta)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && setShowInsta(!showInsta)}
+        <div 
+          className="social-card reveal-base social-card-wide"
+          onClick={() => setShowInsta(!showInsta)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === "Enter" && setShowInsta(!showInsta)}
+          data-reveal
+          style={{ "--index": 1 }}
+        >
+          <div className="social-card-inner">
+            <div className="social-icon-wrapper">
+              <h2 className="social-name">Instagram</h2>
+            </div>
+            <p className="social-copy">Visual journals. Choose how you want to connect.</p>
+            
+            {showInsta ? (
+              <div className="insta-options" onClick={(e) => e.stopPropagation()}>
+                <a 
+                  href="https://instagram.com/leifiyo" 
+                  onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyo")}
+                  className="insta-option"
+                >
+                  <span>Public Feed</span>
+                  <span className="insta-option-icon">↗</span>
+                </a>
+                <a 
+                  href="https://instagram.com/leifiyoprivate" 
+                  onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyoprivate")}
+                  className="insta-option"
+                >
+                  <span>Private (Close Friends)</span>
+                  <span className="insta-option-icon">↗</span>
+                </a>
+              </div>
+            ) : (
+              <span className="social-cta">Expand Options</span>
+            )}
+          </div>
+        </div>
+
+        {SOCIAL_LINKS.map((social, index) => (
+          <a
+            key={social.name}
+            className={`social-card reveal-base ${social.isWide ? "social-card-wide" : ""}`}
+            href={social.href}
+            onClick={(e) => handleNavigate(e, social.href)}
+            aria-label={`${social.name}`}
             data-reveal
-            style={{ "--index": 1 }}
+            style={{ "--index": index + 2 }}
           >
             <div className="social-card-inner">
-              <span className="social-tag">Instagram</span>
-              <p className="social-handle">@leifiyo</p>
-              <p className="social-copy">Visual journals. Choose how you want to connect.</p>
-              
-              {showInsta ? (
-                <div className="insta-options" onClick={(e) => e.stopPropagation()}>
-                  <a href="https://instagram.com/leifiyo" target="_blank" rel="noopener noreferrer" className="insta-option">
-                    <span>Public Feed</span>
-                    <span className="insta-option-icon">↗</span>
-                  </a>
-                  <a href="https://instagram.com/leifiyoprivate" target="_blank" rel="noopener noreferrer" className="insta-option">
-                    <span>Private (Close Friends)</span>
-                    <span className="insta-option-icon">↗</span>
-                  </a>
-                </div>
-              ) : (
-                <span className="social-cta">Expand Options</span>
-              )}
-            </div>
-          </div>
-
-          {SOCIAL_LINKS.map((social, index) => (
-            <a
-              key={social.name}
-              className={`social-card reveal-base tone-${social.tone} ${social.isWide ? "social-card-wide" : ""}`}
-              href={social.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${social.name} ${social.handle}`}
-              data-reveal
-              style={{ "--index": index + 2 }}
-            >
-              <div className="social-card-inner">
-                <span className="social-tag">{social.name}</span>
-                <p className="social-handle">{social.handle}</p>
-                <p className="social-copy">{social.description}</p>
-                <span className="social-cta">View Profile</span>
+              <div className="social-icon-wrapper">
+                <h2 className="social-name">{social.name}</h2>
               </div>
-            </a>
-          ))}
-        </section>
+              <p className="social-copy">{social.description}</p>
+              <span className="social-cta">Visit &#8594;</span>
+            </div>
+          </a>
+        ))}
 
         <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 2 }}>
           <p>© {new Date().getFullYear()} leifiyo</p>
-          <a href="https://leifiyo.dev" target="_blank" rel="noreferrer">
+          <a href="https://leifiyo.dev" onClick={(e) => handleNavigate(e, "https://leifiyo.dev")}>
             leifiyo.dev
           </a>
         </footer>
