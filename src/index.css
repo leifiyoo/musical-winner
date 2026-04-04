@@ -6,31 +6,33 @@
 
 @layer base {
   :root {
-    --background: 45 20% 98%;
-    --foreground: 210 11% 18%;
-    --muted: 43 17% 95%;
-    --muted-foreground: 45 4% 48%;
-    --border: 0 0% 92%;
-    --input: 0 0% 92%;
-    --ring: 210 11% 18%;
-    --primary: 210 11% 18%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 43 17% 95%;
-    --secondary-foreground: 210 11% 18%;
-    --destructive: 0 59% 40%;
-    --destructive-foreground: 0 0% 100%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 64%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 83%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
 
-    --canvas: #fbfbfa;
-    --surface: #ffffff;
-    --ink: #2f3437;
-    --muted-ink: #787774;
-    --structure: #eaeaea;
+    --canvas: #09090b;
+    --surface: #141415;
+    --ink: #f4f4f5;
+    --muted-ink: #a1a1aa;
+    --structure: #27272a;
+    --glow-opacity: 0.15;
   }
 
   * {
     @apply border-border;
     box-sizing: border-box;
   }
+
 
   body {
     margin: 0;
@@ -60,10 +62,10 @@
   inset: -20%;
   pointer-events: none;
   background:
-    radial-gradient(circle at 14% 16%, rgba(225, 243, 254, 0.55) 0%, rgba(225, 243, 254, 0) 38%),
-    radial-gradient(circle at 83% 14%, rgba(251, 243, 219, 0.5) 0%, rgba(251, 243, 219, 0) 34%),
-    radial-gradient(circle at 50% 84%, rgba(237, 243, 236, 0.46) 0%, rgba(237, 243, 236, 0) 41%);
-  opacity: 0.38;
+    radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 83% 14%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 34%),
+    radial-gradient(circle at 50% 84%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 41%);
+  opacity: 0.8;
   animation: drift 30s ease-in-out infinite alternate;
 }
 
@@ -88,8 +90,8 @@
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  background: #f3f0e8;
-  color: var(--muted-ink);
+  background: #18181b;
+  color: var(--ink);
   border: 1px solid var(--structure);
   font-size: 0.68rem;
   font-weight: 600;
@@ -100,7 +102,7 @@
 
 .hero-title {
   margin: 1rem 0 0.55rem;
-  color: #111111;
+  color: var(--ink);
   font-family: "Newsreader", "Instrument Serif", serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   letter-spacing: -0.03em;
@@ -119,12 +121,17 @@
   align-items: center;
   border: 1px solid var(--structure);
   border-radius: 6px;
-  background: #f7f6f3;
-  color: #4e5356;
+  background: #18181b;
+  color: #d4d4d8;
   font-family: "JetBrains Mono", "SF Mono", monospace;
   font-size: 0.76rem;
   letter-spacing: 0.02em;
   padding: 0.42rem 0.72rem;
+  transition: all 0.2s ease;
+}
+
+.hero-mail:hover {
+  background: #27272a;
 }
 
 .social-grid {
@@ -134,7 +141,8 @@
 }
 
 .social-card {
-  display: grid;
+  display: block;
+  text-decoration: none;
   gap: 0.54rem;
   background: var(--surface);
   border: 1px solid var(--structure);
@@ -144,15 +152,22 @@
     transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 200ms ease,
     border-color 200ms ease;
+  color: var(--ink);
+  cursor: pointer;
 }
 
-.social-card:hover {
+.social-card-inner {
+  display: grid;
+  gap: 0.54rem;
+}
+
+.social-card:hover, .social-card-clickable:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  border-color: #dfdfdf;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: #3f3f46;
 }
 
-.social-card:active {
+.social-card:active, .social-card-clickable:active {
   transform: scale(0.98);
 }
 
@@ -171,7 +186,7 @@
 
 .social-handle {
   margin: 0;
-  color: #111111;
+  color: var(--ink);
   font-family: "Newsreader", "Instrument Serif", serif;
   font-size: 1.72rem;
   line-height: 1.15;
@@ -188,37 +203,56 @@
   display: inline-flex;
   justify-self: start;
   margin-top: 0.2rem;
-  color: #333333;
-  border-bottom: 1px solid #d7d7d7;
+  color: #d4d4d8;
+  border-bottom: 1px solid #3f3f46;
   font-size: 0.8rem;
   font-family: "JetBrains Mono", "SF Mono", monospace;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.social-card:hover .social-cta {
+  color: var(--ink);
+  border-color: var(--ink);
 }
 
 .tone-red .social-tag {
-  background: #fdebec;
-  color: #9f2f2d;
-  border-color: rgba(159, 47, 45, 0.18);
+  background: #3f0909;
+  color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.2);
 }
 
 .tone-blue .social-tag {
-  background: #e1f3fe;
-  color: #1f6c9f;
-  border-color: rgba(31, 108, 159, 0.18);
+  background: #082f49;
+  color: #7dd3fc;
+  border-color: rgba(125, 211, 252, 0.2);
 }
 
 .tone-green .social-tag {
-  background: #edf3ec;
-  color: #346538;
-  border-color: rgba(52, 101, 56, 0.18);
+  background: #064e3b;
+  color: #86efac;
+  border-color: rgba(134, 239, 172, 0.2);
 }
 
 .tone-yellow .social-tag {
-  background: #fbf3db;
-  color: #956400;
-  border-color: rgba(149, 100, 0, 0.2);
+  background: #422006;
+  color: #fde047;
+  border-color: rgba(253, 224, 71, 0.2);
 }
+
+.tone-purple .social-tag {
+  background: #3b0764;
+  color: #d8b4fe;
+  border-color: rgba(216, 180, 254, 0.2);
+}
+
+.tone-gray .social-tag {
+  background: #27272a;
+  color: #e4e4e7;
+  border-color: rgba(228, 228, 231, 0.2);
+}
+
 
 .footnote {
   display: flex;
@@ -238,11 +272,53 @@
 }
 
 .footnote a {
-  color: #3e4346;
+  color: var(--muted-ink);
   font-family: "JetBrains Mono", "SF Mono", monospace;
   font-size: 0.8rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+.footnote a:hover {
+  color: var(--ink);
+}
+
+.insta-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.insta-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  background: var(--background);
+  border: 1px solid var(--structure);
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.insta-option:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+.insta-option-icon {
+  font-size: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .reveal-base {

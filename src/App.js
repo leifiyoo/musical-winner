@@ -1,54 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const SOCIAL_LINKS = [
   {
-    name: "Instagram",
-    handle: "@blatt",
-    href: "https://instagram.com/blatt",
-    description: "Fotos, Reels und kurze Studio-Updates.",
-    tone: "blue",
-    isWide: true,
-  },
-  {
-    name: "TikTok",
-    handle: "@blattmusic",
-    href: "https://www.tiktok.com/@blattmusic",
-    description: "Kurzclips aus dem Alltag und neue Hooks.",
-    tone: "yellow",
-    isWide: false,
-  },
-  {
-    name: "YouTube",
-    handle: "@blattmusic",
-    href: "https://www.youtube.com/@blattmusic",
-    description: "Videos, Sessions und komplette Releases.",
+    name: "Apple Music",
+    handle: "leifiyo",
+    href: "https://music.apple.com/",
+    description: "Latest releases, beats, and curated playlists.",
     tone: "red",
-    isWide: false,
-  },
-  {
-    name: "Spotify",
-    handle: "Blatt",
-    href: "https://open.spotify.com/",
-    description: "Alle Tracks und aktuelle Playlists.",
-    tone: "green",
     isWide: true,
-  },
-  {
-    name: "SoundCloud",
-    handle: "blatt-studio",
-    href: "https://soundcloud.com/",
-    description: "Skizzen, Demos und alternative Mixe.",
-    tone: "blue",
-    isWide: false,
   },
   {
     name: "X",
-    handle: "@blattmusic",
-    href: "https://x.com/blattmusic",
-    description: "Kurze Gedanken, Termine und News.",
-    tone: "yellow",
+    handle: "@leifiyo",
+    href: "https://x.com/leifiyo",
+    description: "Quick thoughts, tech, and daily life.",
+    tone: "gray",
     isWide: false,
   },
+  {
+    name: "GitHub",
+    handle: "leifiyo",
+    href: "https://github.com/leifiyo",
+    description: "Open source projects & experiments.",
+    tone: "blue",
+    isWide: false,
+  },
+  {
+    name: "Snapchat",
+    handle: "leifiyo",
+    href: "https://snapchat.com/add/leifiyo",
+    description: "Daily drops and behind the scenes.",
+    tone: "yellow",
+    isWide: true,
+  }
 ];
 
 function useRevealOnScroll() {
@@ -89,6 +73,7 @@ function useRevealOnScroll() {
 
 export default function App() {
   useRevealOnScroll();
+  const [showInsta, setShowInsta] = useState(false);
 
   return (
     <div className="page-shell">
@@ -96,15 +81,46 @@ export default function App() {
 
       <main className="linktree-wrapper">
         <section className="hero-panel reveal-base" data-reveal style={{ "--index": 0 }}>
-          <p className="hero-eyebrow">Social Hub</p>
-          <h1 className="hero-title">blatt</h1>
-          <p className="hero-copy">Alle wichtigen Links an einem Ort.</p>
-          <a className="hero-mail" href="mailto:hello@blatt.music">
-            hello@blatt.music
+          <p className="hero-eyebrow">Profile</p>
+          <h1 className="hero-title">leifiyo</h1>
+          <p className="hero-copy">Minimalist developer, creator, and enthusiast.</p>
+          <a className="hero-mail" href="mailto:hi@leifiyo.dev">
+            hi@leifiyo.dev
           </a>
         </section>
 
         <section className="social-grid" aria-label="Social media links">
+          <div 
+            className="social-card reveal-base tone-purple social-card-wide"
+            onClick={() => setShowInsta(!showInsta)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setShowInsta(!showInsta)}
+            data-reveal
+            style={{ "--index": 1 }}
+          >
+            <div className="social-card-inner">
+              <span className="social-tag">Instagram</span>
+              <p className="social-handle">@leifiyo</p>
+              <p className="social-copy">Visual journals. Choose how you want to connect.</p>
+              
+              {showInsta ? (
+                <div className="insta-options" onClick={(e) => e.stopPropagation()}>
+                  <a href="https://instagram.com/leifiyo" target="_blank" rel="noopener noreferrer" className="insta-option">
+                    <span>Public Feed</span>
+                    <span className="insta-option-icon">↗</span>
+                  </a>
+                  <a href="https://instagram.com/leifiyoprivate" target="_blank" rel="noopener noreferrer" className="insta-option">
+                    <span>Private (Close Friends)</span>
+                    <span className="insta-option-icon">↗</span>
+                  </a>
+                </div>
+              ) : (
+                <span className="social-cta">Expand Options</span>
+              )}
+            </div>
+          </div>
+
           {SOCIAL_LINKS.map((social, index) => (
             <a
               key={social.name}
@@ -114,20 +130,22 @@ export default function App() {
               rel="noreferrer"
               aria-label={`${social.name} ${social.handle}`}
               data-reveal
-              style={{ "--index": index + 1 }}
+              style={{ "--index": index + 2 }}
             >
-              <span className="social-tag">{social.name}</span>
-              <p className="social-handle">{social.handle}</p>
-              <p className="social-copy">{social.description}</p>
-              <span className="social-cta">Link oeffnen</span>
+              <div className="social-card-inner">
+                <span className="social-tag">{social.name}</span>
+                <p className="social-handle">{social.handle}</p>
+                <p className="social-copy">{social.description}</p>
+                <span className="social-cta">View Profile</span>
+              </div>
             </a>
           ))}
         </section>
 
-        <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 1 }}>
-          <p>Minimal und direkt. Alles auf einer Seite.</p>
-          <a href="https://github.com/blatt" target="_blank" rel="noreferrer">
-            github.com/blatt
+        <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 2 }}>
+          <p>© {new Date().getFullYear()} leifiyo</p>
+          <a href="https://leifiyo.dev" target="_blank" rel="noreferrer">
+            leifiyo.dev
           </a>
         </footer>
       </main>
