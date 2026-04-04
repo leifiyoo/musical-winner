@@ -4,7 +4,7 @@ import { LiquidMetal } from '@paper-design/shaders-react';
 const SOCIAL_LINKS = [
   {
     name: "Apple Music",
-    href: "https://music.apple.com/",
+    href: "https://music.apple.com/profile/yoleiyyo",
     description: "My current rotation and favorite tracks.",
     brandClass: "brand-apple",
   },
@@ -16,13 +16,13 @@ const SOCIAL_LINKS = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/leifiyo",
+    href: "https://github.com/leifiyoo",
     description: "Just my personal repositories.",
     brandClass: "brand-github",
   },
   {
     name: "Snapchat",
-    href: "https://snapchat.com/add/leifiyo",
+    href: "https://snapchat.com/add/yoleiyyo",
     description: "Daily snaps and stories.",
     brandClass: "brand-snapchat",
   }
@@ -141,10 +141,10 @@ export default function App() {
                 <span className="insta-option-icon">↗</span>
               </a>
               <a 
-                href="https://instagram.com/leifiyoprivate" 
+                href="https://instagram.com/leifiyo.vip" 
                 onClick={(e) => {
                   setShowInsta(false);
-                  handleNavigate(e, "https://instagram.com/leifiyoprivate");
+                  handleNavigate(e, "https://instagram.com/leifiyo.vip");
                 }}
                 className="insta-option brand-insta-secondary"
               >
