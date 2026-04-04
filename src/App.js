@@ -69,6 +69,16 @@ export default function App() {
   const [showInsta, setShowInsta] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const logoWidth = Math.min(windowWidth * 0.85, 600);
+  const logoHeight = logoWidth * 0.25;
 
   useEffect(() => {
     // Initial site load animation
@@ -149,11 +159,11 @@ export default function App() {
       <main className="main-container">
         <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
           <div className="hero-header-inner">
-            <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '1rem 0' }}>
-              <div style={{ width: "90vw", maxWidth: "1000px", height: "300px", position: "relative" }}>
+            <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '0' }}>
+              <div style={{ width: logoWidth, height: logoHeight, position: "relative" }}>
                 <LiquidMetal
-                  width={1000}
-                  height={300}
+                  width={logoWidth}
+                  height={logoHeight}
                   image="/leifiyoTEXT.png"
                   colorBack="#00000000"
                   colorTint="#ffffff"
@@ -171,7 +181,7 @@ export default function App() {
                 />
               </div>
             </div>
-            <a className="hero-mail" href="mailto:hi@leifiyo.dev">
+            <a className="hero-mail" href="mailto:hi@leifiyo.dev" style={{ marginTop: '0.5rem' }}>
               hi@leifiyo.dev
             </a>
           </div>
