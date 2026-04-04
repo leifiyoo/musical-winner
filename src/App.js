@@ -152,8 +152,8 @@ export default function App() {
             <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
               <div style={{ width: "100%", maxWidth: "600px", height: "160px", position: "relative", marginBottom: "0.5rem", marginLeft: "-2rem" }}>
                 <LiquidMetal
-                  width="100%"
-                  height="100%"
+                  width={600}
+                  height={160}
                   image="/leifiyoTEXT.png"
                   colorBack="#00000000"
                   colorTint="#ffffff"
