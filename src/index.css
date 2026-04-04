@@ -55,27 +55,48 @@
   overflow: hidden;
   background: var(--canvas);
   padding: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.page-shell.is-loaded {
+  opacity: 1;
+}
+
+.initial-load-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--canvas);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.initial-load-overlay.has-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .page-transition-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(9, 9, 11, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--canvas);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   opacity: 0;
-  transform: scale(1.05);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateY(100vh);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
 }
 
 .page-transition-overlay.is-navigating {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0);
   pointer-events: all;
 }
 
@@ -83,34 +104,41 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+}
+
+.redirect-indicator {
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.redirect-indicator::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: white;
+  border-radius: 2px;
+  animation: slideIndeterminate 1s ease-in-out infinite;
+}
+
+@keyframes slideIndeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
 }
 
 .redirect-text {
-  color: white;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-weight: 500;
-  font-size: 1.1rem;
+  color: var(--muted-ink);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.85rem;
   letter-spacing: 0.05em;
-  animation: pulseOpacity 1.5s infinite;
-}
-
-.redirect-spinner {
-  width: 24px;
-  height: 24px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes pulseOpacity {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  text-transform: uppercase;
 }
 
 .main-container {
@@ -121,21 +149,189 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 4.5rem 1.5rem;
+  gap: 2rem;
+  padding: 5rem 1.5rem;
 }
 
-.hero-panel {
+.hero-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 0 3rem;
+}
+
+.hero-header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.name-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-title-shimmer {
+  margin: 0;
+  font-family: "Newsreader", "Instrument Serif", serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--surface);
+  position: relative;
+}
+
+/* Glass/Foil Shimmer effect on text */
+.hero-title-shimmer::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.9) 25%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.9) 75%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shine 6s linear infinite;
+  z-index: 1;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.hero-mail {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--muted-ink);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-transform: lowercase;
+}
+
+.hero-mail:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Instagram Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.modal-content {
   background: var(--surface);
   border: 1px solid var(--structure);
   border-radius: 16px;
-  padding: 3rem clamp(1.5rem, 4vw, 4rem);
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-title {
+  margin: 0 0 1.5rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--muted-ink);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-options {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
-  overflow: hidden;
+  gap: 0.75rem;
+}
+
+.insta-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.2rem;
+  background: var(--background);
+  border: 1px solid var(--structure);
+  border-radius: 12px;
+  color: var(--ink);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.insta-option:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+  transform: translateY(-2px);
+}
+
+.insta-option-icon {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.insta-option:hover .insta-option-icon {
+  opacity: 1;
 }
 
 .social-grid {
@@ -149,23 +345,24 @@
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  background: #18181b;
-  color: var(--ink);
-  border: 1px solid var(--structure);
-  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted-ink);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.24rem 0.58rem;
+  padding: 0.35rem 0.75rem;
+  backdrop-filter: blur(8px);
 }
 
 .hero-title {
   margin: 1rem 0 0.55rem;
-  color: var(--ink);
+  color: rgba(255, 255, 255, 0.05); /* Hidden to show shimmer */
   font-family: "Newsreader", "Instrument Serif", serif;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  letter-spacing: -0.03em;
-  line-height: 1.06;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .hero-copy {
@@ -173,24 +370,6 @@
   margin: 0 0 1.12rem;
   color: var(--muted-ink);
   font-size: 1.01rem;
-}
-
-.hero-mail {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--structure);
-  border-radius: 6px;
-  background: #18181b;
-  color: #d4d4d8;
-  font-family: "JetBrains Mono", "SF Mono", monospace;
-  font-size: 0.76rem;
-  letter-spacing: 0.02em;
-  padding: 0.42rem 0.72rem;
-  transition: all 0.2s ease;
-}
-
-.hero-mail:hover {
-  background: #27272a;
 }
 
 .social-card {
@@ -371,33 +550,9 @@
   animation: fadeIn 0.2s ease-out forwards;
 }
 
-.insta-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1rem;
-  background: var(--background);
-  border: 1px solid var(--structure);
-  border-radius: 8px;
-  color: var(--ink);
-  font-family: "JetBrains Mono", "SF Mono", monospace;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.insta-option:hover {
-  background: #18181b;
-  border-color: #3f3f46;
-}
-
-.insta-option-icon {
-  font-size: 1rem;
-}
-
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .reveal-base {

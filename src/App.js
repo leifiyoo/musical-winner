@@ -4,25 +4,25 @@ const SOCIAL_LINKS = [
   {
     name: "Apple Music",
     href: "https://music.apple.com/",
-    description: "Latest releases, beats, and curated playlists.",
+    description: "My current rotation and favorite tracks.",
     brandClass: "brand-apple",
   },
   {
     name: "X",
     href: "https://x.com/leifiyo",
-    description: "Quick thoughts, tech, and daily life.",
+    description: "Random thoughts and retweets.",
     brandClass: "brand-x",
   },
   {
     name: "GitHub",
     href: "https://github.com/leifiyo",
-    description: "Open source projects & experiments.",
+    description: "Just my personal repositories.",
     brandClass: "brand-github",
   },
   {
     name: "Snapchat",
     href: "https://snapchat.com/add/leifiyo",
-    description: "Daily drops and behind the scenes.",
+    description: "Daily snaps and stories.",
     brandClass: "brand-snapchat",
   }
 ];
@@ -67,6 +67,15 @@ export default function App() {
   useRevealOnScroll();
   const [showInsta, setShowInsta] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Initial site load animation
+    const loadTimer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 150);
+    return () => clearTimeout(loadTimer);
+  }, []);
 
   useEffect(() => {
     // Reset navigation state when coming back to the page via back button
@@ -88,32 +97,67 @@ export default function App() {
   };
 
   return (
-    <div className="page-shell">
+    <div className={`page-shell ${isLoaded ? "is-loaded" : ""}`}>
+      {/* Initial Page Load Overlay */}
+      <div className={`initial-load-overlay ${isLoaded ? "has-loaded" : ""}`} aria-hidden="true">
+        <span className="redirect-spinner"></span>
+      </div>
+
       <div className={`page-transition-overlay ${isNavigating ? "is-navigating" : ""}`} aria-hidden="true">
         <div className="redirect-content">
-          <span className="redirect-spinner"></span>
-          <span className="redirect-text">redirecting...</span>
+          <div className="redirect-indicator"></div>
+          <span className="redirect-text">Navigating...</span>
         </div>
       </div>
       <div className="ambient-layer" aria-hidden="true" />
 
+      {/* Instagram Modal */}
+      {showInsta && (
+        <div className="modal-backdrop" onClick={() => setShowInsta(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">Select Profile</h3>
+            <button className="modal-close" onClick={() => setShowInsta(false)}>✕</button>
+            <div className="modal-options">
+              <a 
+                href="https://instagram.com/leifiyo" 
+                onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyo")}
+                className="insta-option brand-insta-secondary"
+              >
+                <span>Public Feed</span>
+                <span className="insta-option-icon">↗</span>
+              </a>
+              <a 
+                href="https://instagram.com/leifiyoprivate" 
+                onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyoprivate")}
+                className="insta-option brand-insta-secondary"
+              >
+                <span>Private</span>
+                <span className="insta-option-icon">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
       <main className="main-container">
-        <section className="hero-panel reveal-base" data-reveal style={{ "--index": 0 }}>
-          <p className="hero-eyebrow">Profile</p>
-          <h1 className="hero-title">leifiyo</h1>
-          <p className="hero-copy">Developer, creator, and enthusiast.</p>
-          <a className="hero-mail" href="mailto:hi@leifiyo.dev">
-            hi@leifiyo.dev
-          </a>
-        </section>
+        <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
+          <div className="hero-header-inner">
+            <div className="name-wrapper">
+              <h1 className="hero-title-shimmer" data-text="leifiyo">leifiyo</h1>
+            </div>
+            <a className="hero-mail" href="mailto:hi@leifiyo.dev">
+              hi@leifiyo.dev
+            </a>
+          </div>
+        </header>
 
         <section className="social-grid">
           <div 
             className="social-card brand-insta reveal-base"
-            onClick={() => setShowInsta(!showInsta)}
+            onClick={() => setShowInsta(true)}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && setShowInsta(!showInsta)}
+            onKeyDown={(e) => e.key === "Enter" && setShowInsta(true)}
             data-reveal
             style={{ "--index": 1 }}
           >
@@ -121,30 +165,8 @@ export default function App() {
               <div className="social-icon-wrapper">
                 <h2 className="social-name">Instagram</h2>
               </div>
-              <p className="social-copy">Visual journals. Choose how you want to connect.</p>
-              
-              {showInsta ? (
-                <div className="insta-options" onClick={(e) => e.stopPropagation()}>
-                  <a 
-                    href="https://instagram.com/leifiyo" 
-                    onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyo")}
-                    className="insta-option brand-insta-secondary"
-                  >
-                    <span>Public Feed</span>
-                    <span className="insta-option-icon">↗</span>
-                  </a>
-                  <a 
-                    href="https://instagram.com/leifiyoprivate" 
-                    onClick={(e) => handleNavigate(e, "https://instagram.com/leifiyoprivate")}
-                    className="insta-option brand-insta-secondary"
-                  >
-                    <span>Private (Close Friends)</span>
-                    <span className="insta-option-icon">↗</span>
-                  </a>
-                </div>
-              ) : (
-                <span className="social-cta">Expand Options</span>
-              )}
+              <p className="social-copy">Photos & random moments. Tap to select profile.</p>
+              <span className="social-cta">Open Profiles</span>
             </div>
           </div>
 
