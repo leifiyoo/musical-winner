@@ -1,151 +1,136 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Badge } from "./components/ui/badge";
-import { Button } from "./components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
-import { Input } from "./components/ui/input";
-import { Label } from "./components/ui/label";
-import { Separator } from "./components/ui/separator";
-import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
-import { Section } from "./components/ui/section";
-import { Muted } from "./components/ui/typography";
-import { Loader2, Lock, ShieldCheck } from "lucide-react";
+import React, { useEffect } from "react";
 
-const ACCESS_PASSWORD = "admin1234";
+const SOCIAL_LINKS = [
+  {
+    name: "Instagram",
+    handle: "@blatt",
+    href: "https://instagram.com/blatt",
+    description: "Fotos, Reels und kurze Studio-Updates.",
+    tone: "blue",
+    isWide: true,
+  },
+  {
+    name: "TikTok",
+    handle: "@blattmusic",
+    href: "https://www.tiktok.com/@blattmusic",
+    description: "Kurzclips aus dem Alltag und neue Hooks.",
+    tone: "yellow",
+    isWide: false,
+  },
+  {
+    name: "YouTube",
+    handle: "@blattmusic",
+    href: "https://www.youtube.com/@blattmusic",
+    description: "Videos, Sessions und komplette Releases.",
+    tone: "red",
+    isWide: false,
+  },
+  {
+    name: "Spotify",
+    handle: "Blatt",
+    href: "https://open.spotify.com/",
+    description: "Alle Tracks und aktuelle Playlists.",
+    tone: "green",
+    isWide: true,
+  },
+  {
+    name: "SoundCloud",
+    handle: "blatt-studio",
+    href: "https://soundcloud.com/",
+    description: "Skizzen, Demos und alternative Mixe.",
+    tone: "blue",
+    isWide: false,
+  },
+  {
+    name: "X",
+    handle: "@blattmusic",
+    href: "https://x.com/blattmusic",
+    description: "Kurze Gedanken, Termine und News.",
+    tone: "yellow",
+    isWide: false,
+  },
+];
 
-export default function App() {
-  const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingPassword, setIsCheckingPassword] = useState(false);
-  const [error, setError] = useState("");
-  const checkTimeoutRef = useRef(null);
-  const isMountedRef = useRef(true);
-
+function useRevealOnScroll() {
   useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-      if (checkTimeoutRef.current) {
-        clearTimeout(checkTimeoutRef.current);
-      }
-    };
-  }, []);
+    const revealElements = document.querySelectorAll("[data-reveal]");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (isCheckingPassword) {
-      return;
+    if (!revealElements.length) {
+      return undefined;
     }
 
-    setError("");
-    setIsCheckingPassword(true);
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      revealElements.forEach((element) => element.classList.add("is-visible"));
+      return undefined;
+    }
 
-    checkTimeoutRef.current = setTimeout(() => {
-      if (!isMountedRef.current) {
-        return;
+    const observer = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          currentObserver.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -10% 0px",
       }
-
-      if (password === ACCESS_PASSWORD) {
-        setIsAuthenticated(true);
-        setError("");
-        setIsCheckingPassword(false);
-        return;
-      }
-
-      setError("Invalid password. Please try again.");
-      setIsCheckingPassword(false);
-    }, 800);
-  };
-
-  if (isAuthenticated) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-        <Section className="max-w-xl animate-in fade-in-0 duration-500">
-          <Card className="w-full">
-          <CardHeader className="space-y-3 animate-in fade-in-0 slide-in-from-bottom-1 duration-500">
-            <Badge className="w-fit">Access granted</Badge>
-            <CardTitle className="text-3xl">Welcome to the website</CardTitle>
-            <CardDescription>
-              You are now logged in and can access protected content.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <Separator className="mb-4" />
-            <Muted className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-              Session unlocked successfully.
-            </Muted>
-          </CardContent>
-          </Card>
-        </Section>
-      </main>
     );
-  }
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+}
+
+export default function App() {
+  useRevealOnScroll();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-      <Section className="max-w-md animate-in fade-in-0 duration-500">
-        <Card className="w-full">
-        <CardHeader className="space-y-3 animate-in fade-in-0 slide-in-from-bottom-1 duration-500">
-          <Badge variant="secondary" className="w-fit">
-            Protected website
-          </Badge>
-          <CardTitle className="flex items-center gap-2 text-3xl">
-            <Lock className="h-6 w-6" aria-hidden="true" />
-            Sign in
-          </CardTitle>
-          <CardDescription>
-            Enter your password to access the website.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="hidden">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                name="username"
-                autoComplete="username"
-                tabIndex="-1"
-                readOnly
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter password"
-                autoComplete="current-password"
-                disabled={isCheckingPassword}
-              />
-            </div>
-            {error && (
-              <Alert variant="destructive">
-                <AlertTitle>Login failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Button type="submit" className="w-full" disabled={isCheckingPassword}>
-              {isCheckingPassword ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                  Checking password...
-                </>
-              ) : (
-                <>
-                  <Lock className="h-4 w-4" aria-hidden="true" />
-                  Unlock website
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-        </Card>
-      </Section>
-    </main>
+    <div className="page-shell">
+      <div className="ambient-layer" aria-hidden="true" />
+
+      <main className="linktree-wrapper">
+        <section className="hero-panel reveal-base" data-reveal style={{ "--index": 0 }}>
+          <p className="hero-eyebrow">Social Hub</p>
+          <h1 className="hero-title">blatt</h1>
+          <p className="hero-copy">Alle wichtigen Links an einem Ort.</p>
+          <a className="hero-mail" href="mailto:hello@blatt.music">
+            hello@blatt.music
+          </a>
+        </section>
+
+        <section className="social-grid" aria-label="Social media links">
+          {SOCIAL_LINKS.map((social, index) => (
+            <a
+              key={social.name}
+              className={`social-card reveal-base tone-${social.tone} ${social.isWide ? "social-card-wide" : ""}`}
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${social.name} ${social.handle}`}
+              data-reveal
+              style={{ "--index": index + 1 }}
+            >
+              <span className="social-tag">{social.name}</span>
+              <p className="social-handle">{social.handle}</p>
+              <p className="social-copy">{social.description}</p>
+              <span className="social-cta">Link oeffnen</span>
+            </a>
+          ))}
+        </section>
+
+        <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 1 }}>
+          <p>Minimal und direkt. Alles auf einer Seite.</p>
+          <a href="https://github.com/blatt" target="_blank" rel="noreferrer">
+            github.com/blatt
+          </a>
+        </footer>
+      </main>
+    </div>
   );
 }
