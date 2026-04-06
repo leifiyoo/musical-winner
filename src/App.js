@@ -96,7 +96,13 @@ export default function App() {
     return () => window.removeEventListener("pageshow", handlePageShow);
   }, []);
 
-  // Removed handleNavigate to allow native fast navigation and fix Lighthouse INP errors
+  const handleNavigate = (e, url) => {
+    e.preventDefault();
+    setIsNavigating(true);
+    setTimeout(() => {
+      window.location.href = url;
+    }, 1500); // Verzögerung für das "redirecting..." Overlay
+  };
 
   return (
     <div className={`page-shell ${isLoaded ? "is-loaded" : ""}`}>
@@ -124,7 +130,10 @@ export default function App() {
             <div className="modal-options">
               <a 
                 href="https://instagram.com/leifiyo" 
-                onClick={() => setShowInsta(false)}
+                onClick={(e) => {
+                  setShowInsta(false);
+                  handleNavigate(e, "https://instagram.com/leifiyo");
+                }}
                 className="insta-option brand-insta-secondary"
                 aria-label="Public Feed"
               >
@@ -133,7 +142,10 @@ export default function App() {
               </a>
               <a 
                 href="https://instagram.com/leifiyo.vip" 
-                onClick={() => setShowInsta(false)}
+                onClick={(e) => {
+                  setShowInsta(false);
+                  handleNavigate(e, "https://instagram.com/leifiyo.vip");
+                }}
                 className="insta-option brand-insta-secondary"
                 aria-label="Private Feed"
               >
@@ -200,6 +212,7 @@ export default function App() {
               key={social.name}
               className={`social-card brand-base ${social.brandClass} reveal-base`}
               href={social.href}
+              onClick={(e) => handleNavigate(e, social.href)}
               aria-label={`${social.name}`}
               data-reveal
               style={{ "--index": index + 2 }}
@@ -217,7 +230,7 @@ export default function App() {
 
         <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 2 }}>
           <p>© {new Date().getFullYear()} leifiyo</p>
-          <a href="https://leifiyo.dev" aria-label="Visit leifiyo.dev">
+          <a href="https://leifiyo.dev" onClick={(e) => handleNavigate(e, "https://leifiyo.dev")} aria-label="Visit leifiyo.dev">
             leifiyo.dev
           </a>
         </footer>
