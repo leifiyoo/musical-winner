@@ -55,11 +55,6 @@
   overflow: hidden;
   background: var(--canvas);
   padding: 0;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.page-shell.is-loaded {
   opacity: 1;
 }
 

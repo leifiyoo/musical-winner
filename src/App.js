@@ -68,7 +68,7 @@ export default function App() {
   useRevealOnScroll();
   const [showInsta, setShowInsta] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -81,11 +81,8 @@ export default function App() {
   const logoHeight = logoWidth * 0.25;
 
   useEffect(() => {
-    // Initial site load animation
-    const loadTimer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1200); // 1.2s zeigt das Loading ordentlich
-    return () => clearTimeout(loadTimer);
+    // Show content immediately, don't block FCP
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -99,20 +96,16 @@ export default function App() {
     return () => window.removeEventListener("pageshow", handlePageShow);
   }, []);
 
-  const handleNavigate = (e, url) => {
-    e.preventDefault();
-    setIsNavigating(true);
-    setTimeout(() => {
-      window.location.href = url;
-    }, 1500); // Verzögerung für das "redirecting..." Overlay
-  };
+  // Removed handleNavigate to allow native fast navigation and fix Lighthouse INP errors
 
   return (
     <div className={`page-shell ${isLoaded ? "is-loaded" : ""}`}>
       {/* Initial Page Load Overlay */}
-      <div className={`initial-load-overlay ${isLoaded ? "has-loaded" : ""}`} aria-hidden="true">
-        <span className="redirect-spinner"></span>
-      </div>
+      { !isLoaded && (
+        <div className={`initial-load-overlay`} aria-hidden="true">
+          <span className="redirect-spinner"></span>
+        </div>
+      )}
 
       <div className={`page-transition-overlay ${isNavigating ? "is-navigating" : ""}`} aria-hidden="true">
         <div className="redirect-content">
@@ -127,26 +120,22 @@ export default function App() {
         <div className="modal-backdrop" onClick={() => setShowInsta(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3 className="modal-title">Select Profile</h3>
-            <button className="modal-close" onClick={() => setShowInsta(false)}>✕</button>
+            <button className="modal-close" aria-label="Close" onClick={() => setShowInsta(false)}>✕</button>
             <div className="modal-options">
               <a 
                 href="https://instagram.com/leifiyo" 
-                onClick={(e) => {
-                  setShowInsta(false);
-                  handleNavigate(e, "https://instagram.com/leifiyo");
-                }}
+                onClick={() => setShowInsta(false)}
                 className="insta-option brand-insta-secondary"
+                aria-label="Public Feed"
               >
                 <span>Public Feed</span>
                 <span className="insta-option-icon">↗</span>
               </a>
               <a 
                 href="https://instagram.com/leifiyo.vip" 
-                onClick={(e) => {
-                  setShowInsta(false);
-                  handleNavigate(e, "https://instagram.com/leifiyo.vip");
-                }}
+                onClick={() => setShowInsta(false)}
                 className="insta-option brand-insta-secondary"
+                aria-label="Private Feed"
               >
                 <span>Private</span>
                 <span className="insta-option-icon">↗</span>
@@ -211,7 +200,6 @@ export default function App() {
               key={social.name}
               className={`social-card brand-base ${social.brandClass} reveal-base`}
               href={social.href}
-              onClick={(e) => handleNavigate(e, social.href)}
               aria-label={`${social.name}`}
               data-reveal
               style={{ "--index": index + 2 }}
@@ -229,7 +217,7 @@ export default function App() {
 
         <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 2 }}>
           <p>© {new Date().getFullYear()} leifiyo</p>
-          <a href="https://leifiyo.dev" onClick={(e) => handleNavigate(e, "https://leifiyo.dev")}>
+          <a href="https://leifiyo.dev" aria-label="Visit leifiyo.dev">
             leifiyo.dev
           </a>
         </footer>
