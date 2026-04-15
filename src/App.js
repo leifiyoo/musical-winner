@@ -29,7 +29,7 @@ const SOCIAL_LINKS = [
 ];
 
 function BrandLogo({ brand, name }) {
-  const common = { className: "social-logo-icon", "aria-hidden": "true", focusable: "false" };
+  const common = { className: "social-logo-icon", "aria-hidden": "true", focusable: false };
 
   if (brand === "instagram") {
     return (
