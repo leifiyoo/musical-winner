@@ -458,9 +458,50 @@
   color: var(--ink);
   font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.75rem;
   line-height: 1.15;
   letter-spacing: -0.02em;
+}
+
+.social-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.brand-insta .social-logo {
+  border-color: rgba(240, 171, 252, 0.45);
+  color: #f0abfc;
+}
+
+.brand-apple .social-logo {
+  border-color: rgba(252, 165, 165, 0.45);
+  color: #fca5a5;
+}
+
+.brand-x .social-logo {
+  border-color: rgba(228, 228, 231, 0.45);
+  color: #e4e4e7;
+}
+
+.brand-github .social-logo {
+  border-color: rgba(147, 197, 253, 0.45);
+  color: #93c5fd;
+}
+
+.brand-snapchat .social-logo {
+  border-color: rgba(254, 240, 138, 0.5);
+  color: #fef08a;
 }
 
 .social-copy {

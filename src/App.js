@@ -5,25 +5,25 @@ const SOCIAL_LINKS = [
   {
     name: "Apple Music",
     href: "https://music.apple.com/profile/yoleiyyo",
-    description: "My current rotation and favorite tracks.",
+    logo: "AM",
     brandClass: "brand-apple",
   },
   {
     name: "X",
     href: "https://x.com/leifiyo",
-    description: "Random thoughts and retweets.",
+    logo: "X",
     brandClass: "brand-x",
   },
   {
     name: "GitHub",
     href: "https://github.com/leifiyoo",
-    description: "Just my personal repositories.",
+    logo: "GH",
     brandClass: "brand-github",
   },
   {
     name: "Snapchat",
     href: "https://snapchat.com/add/yoleiyyo",
-    description: "Daily snaps and stories.",
+    logo: "SC",
     brandClass: "brand-snapchat",
   }
 ];
@@ -201,8 +201,8 @@ export default function App() {
             <div className="social-card-inner">
               <div className="social-icon-wrapper">
                 <h2 className="social-name">Instagram</h2>
+                <span className="social-logo" aria-hidden="true">IG</span>
               </div>
-              <p className="social-copy">Photos & random moments. Tap to select profile.</p>
               <span className="social-cta">Open Profiles</span>
             </div>
           </div>
@@ -220,8 +220,8 @@ export default function App() {
               <div className="social-card-inner">
                 <div className="social-icon-wrapper">
                   <h2 className="social-name">{social.name}</h2>
+                  <span className="social-logo" aria-hidden="true">{social.logo}</span>
                 </div>
-                <p className="social-copy">{social.description}</p>
                 <span className="social-cta">Visit &#8594;</span>
               </div>
             </a>
