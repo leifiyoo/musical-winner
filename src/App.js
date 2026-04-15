@@ -201,7 +201,7 @@ export default function App() {
             <div className="social-card-inner">
               <div className="social-icon-wrapper">
                 <h2 className="social-name">Instagram</h2>
-                <span className="social-logo" aria-hidden="true">IG</span>
+                <span className="social-logo">IG</span>
               </div>
               <span className="social-cta">Open Profiles</span>
             </div>
@@ -220,7 +220,7 @@ export default function App() {
               <div className="social-card-inner">
                 <div className="social-icon-wrapper">
                   <h2 className="social-name">{social.name}</h2>
-                  <span className="social-logo" aria-hidden="true">{social.logo}</span>
+                  <span className="social-logo">{social.logo}</span>
                 </div>
                 <span className="social-cta">Visit &#8594;</span>
               </div>
