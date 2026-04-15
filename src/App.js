@@ -5,28 +5,76 @@ const SOCIAL_LINKS = [
   {
     name: "Apple Music",
     href: "https://music.apple.com/profile/yoleiyyo",
-    logo: "AM",
+    brand: "appleMusic",
     brandClass: "brand-apple",
   },
   {
     name: "X",
     href: "https://x.com/leifiyo",
-    logo: "X",
+    brand: "x",
     brandClass: "brand-x",
   },
   {
     name: "GitHub",
     href: "https://github.com/leifiyoo",
-    logo: "GH",
+    brand: "github",
     brandClass: "brand-github",
   },
   {
     name: "Snapchat",
     href: "https://snapchat.com/add/yoleiyyo",
-    logo: "SC",
+    brand: "snapchat",
     brandClass: "brand-snapchat",
   }
 ];
+
+function BrandLogo({ brand, name }) {
+  const common = { className: "social-logo-icon", "aria-hidden": "true", focusable: "false" };
+
+  if (brand === "instagram") {
+    return (
+      <svg viewBox="0 0 24 24" {...common}>
+        <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (brand === "appleMusic") {
+    return (
+      <svg viewBox="0 0 24 24" {...common}>
+        <path fill="currentColor" d="M15.9 4.2v9.8a3.4 3.4 0 1 1-1.8-3V7.3l-6.6 1.4v7.3a3.4 3.4 0 1 1-1.8-3V7.1c0-.8.5-1.4 1.2-1.6l7.9-1.7a1.3 1.3 0 0 1 1 .2c.3.2.5.6.5 1Z" />
+      </svg>
+    );
+  }
+
+  if (brand === "x") {
+    return (
+      <svg viewBox="0 0 24 24" {...common}>
+        <path fill="currentColor" d="M18.8 4h-2.6l-3.8 4.8L8.5 4H4l6 8-6.4 8h2.6l4.2-5.2 4 5.2H19l-6.2-8L18.8 4Z" />
+      </svg>
+    );
+  }
+
+  if (brand === "github") {
+    return (
+      <svg viewBox="0 0 24 24" {...common}>
+        <path fill="currentColor" d="M12 2.3a9.8 9.8 0 0 0-3.1 19.1c.5.1.6-.2.6-.5v-1.9c-2.5.5-3-1.1-3-1.1-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.5 2.4 1.1 3 .9.1-.7.4-1.1.7-1.4-2-.2-4.1-1-4.1-4.5 0-1 .4-1.9 1.1-2.6-.1-.2-.5-1.2.1-2.5 0 0 .9-.3 2.8 1a9.4 9.4 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .6 1.3.2 2.3.1 2.5.7.7 1.1 1.6 1.1 2.6 0 3.5-2.1 4.3-4.1 4.5.4.3.8 1 .8 2v3c0 .3.1.6.6.5A9.8 9.8 0 0 0 12 2.3Z" />
+      </svg>
+    );
+  }
+
+  if (brand === "snapchat") {
+    return (
+      <svg viewBox="0 0 24 24" {...common}>
+        <path fill="currentColor" d="M12 3.6c2.6 0 4.7 2 4.7 4.5v2.1c0 .5.3 1 .8 1.2.4.2.8.4 1.2.5.3.1.4.5.2.7-.3.3-.8.6-1.5.8-.2.1-.3.3-.2.5.3 1.1 1.1 2 2.3 2.4.2.1.3.3.2.5-.2.5-.8.8-1.5.9-.6.1-1.2.2-1.8.5-.5.2-.9.6-1.2 1.1-.1.2-.3.3-.5.3-.5 0-1-.2-1.4-.4a5 5 0 0 0-4.6 0c-.4.2-.9.4-1.4.4-.2 0-.4-.1-.5-.3a2.6 2.6 0 0 0-1.2-1.1c-.6-.3-1.2-.4-1.8-.5-.7-.1-1.3-.4-1.5-.9-.1-.2 0-.4.2-.5 1.2-.4 2-1.3 2.3-2.4.1-.2 0-.4-.2-.5-.7-.2-1.2-.5-1.5-.8-.2-.2-.1-.6.2-.7.4-.1.8-.3 1.2-.5.5-.2.8-.7.8-1.2V8.1c0-2.5 2.1-4.5 4.7-4.5Z" />
+      </svg>
+    );
+  }
+
+  return <span aria-hidden="true">{name.slice(0, 1)}</span>;
+}
 
 function useRevealOnScroll() {
   useEffect(() => {
@@ -198,13 +246,15 @@ export default function App() {
             data-reveal
             style={{ "--index": 1 }}
           >
-            <div className="social-card-inner">
-              <div className="social-icon-wrapper">
-                <h2 className="social-name">Instagram</h2>
-                <span className="social-logo">IG</span>
+              <div className="social-card-inner">
+                <div className="social-icon-wrapper">
+                  <h2 className="social-name">Instagram</h2>
+                  <span className="social-logo" aria-hidden="true">
+                    <BrandLogo brand="instagram" name="Instagram" />
+                  </span>
+                </div>
+                <span className="social-cta">Open Profiles</span>
               </div>
-              <span className="social-cta">Open Profiles</span>
-            </div>
           </div>
 
           {SOCIAL_LINKS.map((social, index) => (
@@ -220,7 +270,9 @@ export default function App() {
               <div className="social-card-inner">
                 <div className="social-icon-wrapper">
                   <h2 className="social-name">{social.name}</h2>
-                  <span className="social-logo">{social.logo}</span>
+                  <span className="social-logo" aria-hidden="true">
+                    <BrandLogo brand={social.brand} name={social.name} />
+                  </span>
                 </div>
                 <span className="social-cta">Visit &#8594;</span>
               </div>
