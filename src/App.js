@@ -125,8 +125,8 @@ export default function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const logoWidth = Math.min(windowWidth * 0.85, 600);
-  const logoHeight = logoWidth * 0.25;
+  const logoWidth = Math.min(windowWidth * 0.95, 1100);
+  const logoHeight = logoWidth * 0.38;
 
   useEffect(() => {
     // Show content immediately, don't block FCP
@@ -205,7 +205,7 @@ export default function App() {
         </div>
       )}
 
-      <main className="main-container">
+      <main className="main-container" style={{ justifyContent: 'center', minHeight: '100vh', padding: '0' }}>
         <header className="hero-header reveal-base" data-reveal style={{ "--index": 0 }}>
           <div className="hero-header-inner">
             <div className="name-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '0' }}>
@@ -230,62 +230,11 @@ export default function App() {
                 />
               </div>
             </div>
-            <a className="hero-mail" href="mailto:hi@leifiyo.dev" style={{ marginTop: '0.5rem' }}>
-              hi@leifiyo.dev
-            </a>
+
           </div>
         </header>
 
-        <section className="social-grid">
-          <div 
-            className="social-card brand-insta reveal-base"
-            onClick={() => setShowInsta(true)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && setShowInsta(true)}
-            data-reveal
-            style={{ "--index": 1 }}
-          >
-              <div className="social-card-inner">
-                <div className="social-icon-wrapper">
-                  <h2 className="social-name">Instagram</h2>
-                  <span className="social-logo" aria-hidden="true">
-                    <BrandLogo brand="instagram" name="Instagram" />
-                  </span>
-                </div>
-                <span className="social-cta">Open Profiles</span>
-              </div>
-          </div>
 
-          {SOCIAL_LINKS.map((social, index) => (
-            <a
-              key={social.name}
-              className={`social-card brand-base ${social.brandClass} reveal-base`}
-              href={social.href}
-              onClick={(e) => handleNavigate(e, social.href)}
-              aria-label={`${social.name}`}
-              data-reveal
-              style={{ "--index": index + 2 }}
-            >
-              <div className="social-card-inner">
-                <div className="social-icon-wrapper">
-                  <h2 className="social-name">{social.name}</h2>
-                  <span className="social-logo" aria-hidden="true">
-                    <BrandLogo brand={social.brand} name={social.name} />
-                  </span>
-                </div>
-                <span className="social-cta">Visit &#8594;</span>
-              </div>
-            </a>
-          ))}
-        </section>
-
-        <footer className="footnote reveal-base" data-reveal style={{ "--index": SOCIAL_LINKS.length + 2 }}>
-          <p>© {new Date().getFullYear()} leifiyo</p>
-          <a href="https://leifiyo.dev" onClick={(e) => handleNavigate(e, "https://leifiyo.dev")} aria-label="Visit leifiyo.dev">
-            leifiyo.dev
-          </a>
-        </footer>
       </main>
     </div>
   );
